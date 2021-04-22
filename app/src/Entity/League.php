@@ -21,7 +21,7 @@ class League
      * @ORM\OneToOne(targetEntity=Country::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $country_id;
+    private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,14 +33,14 @@ class League
         return $this->id;
     }
 
-    public function getCountryId(): ?Country
+    public function getCountry(): ?Country
     {
-        return $this->country_id;
+        return $this->country;
     }
 
-    public function setCountryId(Country $country_id): self
+    public function setCountry(Country $country): self
     {
-        $this->country_id = $country_id;
+        $this->country = $country;
 
         return $this;
     }
