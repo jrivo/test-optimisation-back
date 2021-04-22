@@ -126,6 +126,7 @@ RUN composer dump-env prod; \
 
 # copy only specifically what we need
 COPY bin bin/
+COPY data data/
 COPY config config/
 COPY public public/
 COPY src src/
