@@ -43,5 +43,25 @@ class SalesController extends AbstractController
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
 
-    
+
+    /**
+     * @Route("/heavy-operation", name="heavy_operation")
+     */
+    public function heavy_operation(): Response
+    {
+        $this->heavy_loop(1100);
+        $result = array("result"=> "Operation finished");
+        return new JsonResponse(json_encode($result), Response::HTTP_OK, [], true);
+    }
+
+    public function heavy_loop(int $iterations) {
+        for($i = 0; $i < $iterations; $i++){
+            for($j = 0; $j < $iterations; $j++){
+                for($k = 0; $k < $iterations; $k++){
+                        $result = $i*$j*$k;
+
+                }
+            }
+        }
+    }
 }
