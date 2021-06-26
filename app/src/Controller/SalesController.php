@@ -20,15 +20,28 @@ class SalesController extends AbstractController
      */
     public function index(): Response
     {
-        $sale = new Sale();
         $em = $this->getDoctrine()->getManager();
         $sales = $em->getRepository(Sale::class)->findAll();
-//        var_dump("$sales");
-//        die();
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
         $jsonContent = $serializer->serialize($sales, 'json');
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
+
+    /**
+     * @Route("/sales-light", name="sales_light")
+     */
+    public function sales_light(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sales = $em->getRepository(Sale::class)->findBy(array(), null, 10);
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers, $encoders);
+        $jsonContent = $serializer->serialize($sales, 'json');
+        return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
+    }
+
+    
 }
