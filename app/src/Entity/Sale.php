@@ -10,10 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Sale
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", unique=true)
      */
     private $id;
 
@@ -90,6 +91,11 @@ class Sale
     public function getId(): ?int
     {
         return $this->id;
+    }
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getRegion(): ?string
