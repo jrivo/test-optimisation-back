@@ -1,7 +1,3 @@
-
-# Sales API
-
-
 ## Steps to run the project
 
 ### Step 1
