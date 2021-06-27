@@ -1,8 +1,3 @@
-
-#Sales API
-
-https://drive.google.com/file/d/1u9KmsyFH-lRwmcxRvFxQtp5N5RWJO3VZ/view?usp=sharing
-
 ## Steps to run the project
 
 ### Step 1
@@ -62,6 +57,7 @@ Request type: POST
 ##### add sale
 Enpoint to add a new sale 
 http://0.0.0.0:8082/add-sale
+The response isn't sent right away, the program waits a few seconds (generated randomly) before sending a response
 Request type: POST
 
 ```
