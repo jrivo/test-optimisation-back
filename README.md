@@ -35,7 +35,7 @@ Request type: GET
 
 ###### sales light
 To get only a sample of the data you can go to:
-http://0.0.0.0:8082/sales
+http://0.0.0.0:8082/sales-light
 This request is much faster than the previous one since it only gets 10 sales
 Request type: GET
 
