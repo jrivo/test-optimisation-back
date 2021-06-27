@@ -1,7 +1,15 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -9,8 +17,11 @@ security:
         main:
             anonymous: true
             lazy: true
-            provider: users_in_memory
-
+            provider: app_user_provider
+            json_login:
+                check_path: app_login
+                username_path: username
+                password_path: password
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -22,3 +33,9 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+    password_hashers:
+        # use your user class name here
+        App\Entity\User:
+            # Use native password hasher, which auto-selects the best
+            # possible hashing algorithm (starting from Symfony 5.3 this is "bcrypt")
+            algorithm: auto
