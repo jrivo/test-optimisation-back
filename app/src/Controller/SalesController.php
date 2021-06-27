@@ -93,8 +93,9 @@ class SalesController extends AbstractController
         $sale->setTotalProfit($request->get("total_profit"));
         $sale->setOrderDate($request->get("order_date"));
 //        $sale->setId($lastSale[0]->getId() + 99999999999);
-        $em->persist($sale);
-        $em->flush();
+//        $em->persist($sale);
+//        $em->flush();
+        sleep(rand(0,5));
         $result = array("result"=> "it's done");
         return new JsonResponse(json_encode($result), Response::HTTP_OK, [], true);
     }
