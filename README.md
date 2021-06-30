@@ -21,7 +21,7 @@ sudo docker cp sales.csv 4ad2adecd9f4:/
 
 
 // To import the file to your database
-sudo docker-compose exec php bin/console doctrine:query:sql "COPY sale(region, country, item_type, order_date, id) FROM '/sales.csv' DELIMITER ',' CSV HEADER;"
+sudo docker-compose exec php bin/console doctrine:query:sql "COPY sale(region, country, item_type, sales_channel, order_priority, order_date, order_id, ship_date, units_sold, unit_price, unit_cost, total_revenue, total_cost, total_profit, id) FROM '/sales.csv' DELIMITER ',' CSV HEADER;"
 ```
 
 And that's it you're good to go
