@@ -6,24 +6,26 @@
 
 Download the sales csv file and add it to the root folder
 
-CSV file link: <https://drive.google.com/file/d/1u9KmsyFH-lRwmcxRvFxQtp5N5RWJO3VZ/view?usp=sharing>
+[CSV file link](https://drive.google.com/file/d/1u9KmsyFH-lRwmcxRvFxQtp5N5RWJO3VZ/view?usp=sharing>)
 
 ### Step 2
 
 The next step is to import the file to your database
 
 ```bash
-// Run docker-compose
+# Run docker-compose
 sudo docker-compose up -d
 
-
-// Add the file in the postgres container
+# Add the file in the postgres container
 sudo docker cp sales.csv 4ad2adecd9f4:/
-// 4ad2adecd9f4 is just an example you should use your own postrgres container ID
+# 4ad2adecd9f4 is just an example you should use your own postrgres container ID
 
 
-// To import the file to your database
-sudo docker-compose exec php bin/console doctrine:query:sql "COPY sale(region, country, item_type, sales_channel, order_priority, order_date, order_id, ship_date, units_sold, unit_price, unit_cost, total_revenue, total_cost, total_profit, id) FROM '/sales.csv' DELIMITER ',' CSV HEADER;"
+# To import the file to your database
+sudo docker-compose exec php bin/console doctrine:query:sql "COPY sale(region, \
+country, item_type, sales_channel, order_priority, order_date, order_id, \
+ship_date, units_sold, unit_price, unit_cost, total_revenue, total_cost, \
+total_profit, id) FROM '/sales.csv' DELIMITER ',' CSV HEADER;"
 ```
 
 And that's it you're good to go
@@ -45,8 +47,8 @@ Request type: GET
 
 ### heavy operation
 
-The endpoint below triggers an operation that consumes a lot of resources, it usually takes a few seconds
-<http://0.0.0.0:8082/heavy-operation>
+The endpoint below triggers an operation that consumes a lot of resources, it
+usually takes a few seconds <http://0.0.0.0:8082/heavy-operation>
 Request type: GET
 
 ### delete sale
@@ -65,10 +67,10 @@ Request type: POST
 
 ### add sale
 
-Enpoint to add a new sale
+Endpoint to add a new sale
 <http://0.0.0.0:8082/add-sale>
-The response isn't sent right away, the program waits a few seconds (generated randomly) before sending a response
-Request type: POST
+The response isn't sent right away, the program waits a few seconds (generated
+randomly) before sending a response Request type: POST
 
 ```json
 //request example
@@ -115,9 +117,17 @@ to generate a hashed password run the following command in the terminal:
 sudo docker-compose exec php bin/console security:hash-password
 ```
 
-then copy the hashed password and past it in the password field in the user table (in phpstorm)  
+then copy the hashed password and past it in the password field in the user
+table (in phpstorm)  
 
 ## Running the performance tests
+
+First you need to [install k6](https://k6.io/docs/getting-started/installation/).
+
+Then you must modify your username and password inside the k6 scripts to match
+the credentials you entered in the database.
+
+Then you are ready to launch the tests:
 
 ```bash
 k6 run performance_tests/smoke-test.js
