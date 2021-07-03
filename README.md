@@ -124,11 +124,26 @@ table (in phpstorm)
 
 First you need to [install k6](https://k6.io/docs/getting-started/installation/).
 
-Then you must modify your username and password inside the k6 scripts to match
-the credentials you entered in the database.
+Then you must modify your username and password inside "user_credentials.json"
+to match the credentials you entered in the database.
 
 Then you are ready to launch the tests:
 
 ```bash
 k6 run performance_tests/smoke-test.js
+```
+
+### Viewing results on k6 cloud
+
+If you want to associate with a k6 cloud account to see details of the test
+results, you must [login](https://k6.io/docs/results-visualization/cloud/):
+
+```bash
+k6 login cloud
+```
+
+Then run the tests with:
+
+```bash
+k6 run --out cloud performance_tests/smoke-test.js
 ```

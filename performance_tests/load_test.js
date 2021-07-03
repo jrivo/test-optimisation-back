@@ -1,13 +1,15 @@
 import http from 'k6/http';
-import { check, group, sleep, fail } from 'k6';
-import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
+import { check, group, sleep } from 'k6';
 
 export let options = {
-  vus: 1, // 1 user looping for 1 minute
-  duration: '1m',
-
+  stages: [
+    { duration: '1m', target: 10 }, // simulate ramp-up of traffic from 1 to 100 users over 5 minutes.
+    { duration: '2m', target: 10 }, // stay at 100 users for 10 minutes
+    { duration: '1m', target: 0 }, // ramp-down to 0 users
+  ],
   thresholds: {
     http_req_duration: ['p(99)<1500'], // 99% of requests must complete below 1.5s
+    'logged in successfully': ['p(99)<1500'], // 99% of requests must complete below 1.5s
   },
 };
 
@@ -15,7 +17,10 @@ const BASE_URL = 'http://0.0.0.0:8082';
 const user_credentials = JSON.parse(open('./user_credentials.json'))
 
 export default () => {
-  let loginRes = http.post(`${BASE_URL}/login`, user_credentials);
+  let loginRes = http.post(`${BASE_URL}/login`, {
+    username: user_credentials.USERNAME,
+    password: user_credentials.PASSWORD,
+  });
   check(loginRes, {
     'logged in successfully': (resp) => resp.json('user') !== null,
   });
@@ -55,13 +60,4 @@ export default () => {
 
   sleep(1);
 };
- 
-export function handleSummary(data) {
-	console.log('Preparing the end-of-test summary...');
 
-	return {
-		'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
-		'./results/smoke-test.json': JSON.stringify(data), // and a JSON with all the details...
-	}
-
-}
