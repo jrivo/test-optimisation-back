@@ -1,5 +1,6 @@
 import http from 'k6/http';
 import { check, group, sleep } from 'k6';
+import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 
 export let options = {
   stages: [
@@ -61,3 +62,12 @@ export default () => {
   sleep(1);
 };
 
+export function handleSummary(data) {
+	console.log('Preparing the end-of-test summary...');
+
+	return {
+		'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
+		'./results/load-test.json': JSON.stringify(data), // and a JSON with all the details...
+	}
+
+}
