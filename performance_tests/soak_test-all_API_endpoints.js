@@ -10,7 +10,7 @@ export let options = {
 };
 
 const BASE_URL = 'http://0.0.0.0:8082';
-const user_credentials = JSON.parse(open('./user_credentials.json'))
+const user_credentials = JSON.parse(open('./user_credentials.json'));
 
 export default function () {
 
@@ -18,8 +18,9 @@ export default function () {
     [
       'POST',
       `${BASE_URL}/login`,
-      user_credentials,
-      { tags: { name: 'Login responses' } },
+      JSON.stringify(user_credentials),
+      { tags: { name: 'Login responses' },
+        headers: { 'Content-Type': 'application/json' } },
     ],
     [
       'GET',
@@ -61,6 +62,7 @@ export default function () {
       { tags: { name: 'Add-sale responses' } },
     ],
   ]);
+	// console.log(JSON.stringify(responses[0]));
 
   sleep(1);
 }

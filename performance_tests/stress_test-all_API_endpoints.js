@@ -24,8 +24,9 @@ export default function () {
     [
       'POST',
       `${BASE_URL}/login`,
-      user_credentials,
-      { tags: { name: 'Login responses' } },
+      JSON.stringify(user_credentials),
+      { tags: { name: 'Login responses' },
+        headers: { 'Content-Type': 'application/json' } },
     ],
     [
       'GET',

@@ -12,10 +12,12 @@ export let options = {
 };
 
 const BASE_URL = 'http://0.0.0.0:8082';
-const user_credentials = JSON.parse(open('./user_credentials.json'))
+const user_credentials = JSON.parse(open('./user_credentials.json'));
 
 export default () => {
-  let loginRes = http.post(`${BASE_URL}/login`, user_credentials);
+	let loginRes = http.post(`${BASE_URL}/login`, user_credentials, { 
+		headers: { 'Content-Type': 'application/json' }
+	});
   check(loginRes, {
     'logged in successfully': (resp) => resp.json('user') !== null,
   });
