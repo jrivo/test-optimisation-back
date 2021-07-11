@@ -122,6 +122,8 @@ table (in phpstorm)
 
 ## Running the performance tests
 
+### K6
+
 First you need to [install k6](https://k6.io/docs/getting-started/installation/).
 
 Then you must modify your username and password inside "user_credentials.json"
@@ -133,7 +135,7 @@ Then you are ready to launch the tests:
 k6 run performance_tests/smoke-test.js
 ```
 
-### Viewing results on k6 cloud
+#### Viewing results on k6 cloud
 
 If you want to associate with a k6 cloud account to see details of the test
 results, you must [login](https://k6.io/docs/results-visualization/cloud/):
@@ -147,3 +149,32 @@ Then run the tests with:
 ```bash
 k6 run --out cloud performance_tests/smoke-test.js
 ```
+
+### Blackfire
+
+Make your account on blackfire.io and fill the .env.example file with [your
+credentials](https://blackfire.io/my/settings/credentials). Rename it to '.env'.
+
+Re-build the docker containers because the Dockerfile has changed from previous
+versions, and from now on, run docker-compose with the following command:
+
+```bash
+docker-compose --env-file .env up
+```
+
+You will see that the blackfire agent is running. Open another terminal and
+type:
+
+```bash
+docker-compose exec blackfire blackfire <url>
+```
+
+I am not sure what \<url\> is the right one, but I have tried the following
+without success:
+
+- http://php
+- http://php:8082
+- http://nginx
+- http://nginx:8082
+- http://localhost:3000
+- http://0.0.0.0:8082
