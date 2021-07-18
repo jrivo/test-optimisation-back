@@ -1,1 +1,7 @@
 app/node_modules/
+
+sales.csv
+*.DS_Store
+
+.env
+*.idea/*
