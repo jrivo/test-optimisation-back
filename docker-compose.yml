@@ -20,6 +20,8 @@ services:
       - db-data:/var/lib/postgresql/data:rw
     ports:
       - '5432:5432'
+    networks: # I'm not sure about this
+      - dev
 
   php:
     image: ${PHP_IMAGE:-iw/php}
@@ -34,6 +36,8 @@ services:
       - ./app/docker/php/conf.d/api-platform.dev.ini/:/usr/local/etc/php/conf.d/api-platform.ini
       #- app-front:/srv/app/public/build
       - app-sf-cache:/srv/app/var
+    networks: # I'm not sure about this
+      - dev
 
   node:
     image: ${NODE_IMAGE:-iw/node}
@@ -62,6 +66,25 @@ services:
       #- app-front:/srv/app/public/build:ro
     ports:
       - "8082:80"
+    networks: # I'm not sure about this
+      - dev
+
+# code taken from: https://blackfire.io/docs/up-and-running/docker
+  blackfire:
+    image: blackfire/blackfire:2
+    ports: ["8307"]
+    environment:
+      # Exposes BLACKFIRE_* environment variables from the host
+      BLACKFIRE_LOG_LEVEL: 4
+      BLACKFIRE_SERVER_ID: $BLACKFIRE_SERVER_ID
+      BLACKFIRE_SERVER_TOKEN: $BLACKFIRE_SERVER_TOKEN
+      BLACKFIRE_CLIENT_ID: $BLACKFIRE_CLIENT_ID
+      BLACKFIRE_CLIENT_TOKEN: $BLACKFIRE_CLIENT_TOKEN
+    networks: # I'm not sure about this, but I saw in this tutorial: https://www.youtube.com/watch?v=aiDo9Ku93ew&ab_channel=YoanDev
+      - dev
+
+networks: # I'm not sure about this
+  dev:
 
 volumes:
   db-data: {}

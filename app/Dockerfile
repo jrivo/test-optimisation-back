@@ -99,7 +99,7 @@ RUN apk --update --no-cache add \
     ttf-dejavu \
     ttf-droid \
     ttf-liberation \
-    ttf-ubuntu-font-family \
+#    ttf-ubuntu-font-family \
     fontconfig
 
 # Add openssl dependencies for wkhtmltopdf
@@ -107,6 +107,16 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.8/main' >> /etc/apk/repositori
     apk add --no-cache libcrypto1.0 libssl1.0
 
 COPY --from=wkhtmltopdf_image /bin/wkhtmltopdf /usr/bin/
+
+# Blackfire - code taken from https://blackfire.io/docs/php/integrations/php-docker
+RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+    && architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "amd64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "amd64" ;; esac) \
+    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/$architecture/$version \
+    && mkdir -p /tmp/blackfire \
+    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
+    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8307\n" > $PHP_INI_DIR/conf.d/blackfire.ini \
+    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 
 WORKDIR /srv/app
 
