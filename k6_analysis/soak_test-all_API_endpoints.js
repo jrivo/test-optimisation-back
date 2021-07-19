@@ -3,8 +3,8 @@ import {sleep, check} from 'k6';
 
 export let options = {
     stages: [
-        {duration: '10s', target: 30}, // ramp up to 30 users
-        {duration: '8m', target: 30}, // stay at 30 users for 8m
+        {duration: '10s', target: 26}, // ramp up to 30 users
+        {duration: '6m', target: 26}, // stay at 30 users for 8m
         {duration: '10s', target: 0}, // scale down.
     ],
     thresholds: {
@@ -91,6 +91,6 @@ export default function () {
         'delete a sale': (resp) => resp[4].json('result') === "Sale deleted",
         'add a sale': (resp) => resp[5].json('result') === "it's done",
     });
-    sleep(1);
+    sleep(2);
 }
  
